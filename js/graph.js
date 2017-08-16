@@ -15,6 +15,8 @@ class Plot {
 		this.dataMin =0;
 		this.frameRate = 60;
 		this.drawingSpeed = 200;
+		this.numAverages = 3;
+		this.useAveraging=false;
 		this.setDefaults()
 		// Genericc Program options are defined here
 	};
@@ -160,14 +162,39 @@ class Plot {
 		document.body.style.backgroundColor = background_colour;
 	}
 
+	plotData(inputData) {
+		if (this.useAveraging==true) {
+			this.tempValue =0;
+			this.averagedData=0;
+			for (var j=0;j<Math.ceil(inputData.length/this.numAverages);i++) {
+				for (var k=0;k<this.numAverages;k++) {
+					this.tempValue = inputData[k+this.numAverages*j]; // This makes sure for each loop we're actually taking the correct data
+				}
+				if ((inputData.length%this.numAverages)==0) {				
+	 				this.averagedData = this.tempValue/this.numAverages;
+	 				this.shiftData(this.scaleYData(this.averagedData));
+				}
+				else {
+					this.averagedData = this.tempValue/(inputData.length%this.numAverages); 		// This handles if our data isn't an exact multiple of what we're left with
+					this.shiftData(this.scaleYData(this.averagedData));
+				}
+			}
+		}
+		// Alternatively if we don't want averaging at all, we'll just deal with the data rate the best we can.
+		else { 
+			for (var i=0;i<inputData.length;i++){
+				this.shiftData(this.scaleYData(inputData[i]));
+			}
+		}
+		drawData();
+	}
+
 
 	// set this in the code by doing plot.lineColour.xaxis="rgba(red,green,blue,opacity)"
-	plotData(newData){
+	drawData(){
 		if (this.drawing==false) {
 			this.drawing=true;
-			for (var i=0;i<newData.length;i++){
-				this.shiftData(this.scaleYData(newData[i]));
-			}
+
 			
 			// We'll now clear the data points canvas so we can redraw it
 
