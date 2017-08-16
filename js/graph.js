@@ -13,6 +13,8 @@ class Plot {
 		this.dataOptions;
 		this.dataMax =1000;
 		this.dataMin =0;
+		this.frameRate = 60;
+		this.drawingSpeed = 200;
 		this.setDefaults()
 		// Genericc Program options are defined here
 	};
@@ -139,7 +141,7 @@ class Plot {
 
 		this.yTickStringText = new Array(this.plotOptions.numVertGridLines);
 		this.xTickStringText = new Array(this.plotOptions.numHorGridLines);
-		
+		this.pointsPerDraw = 1+Math.ceil(drawingSpeed/FPS);
 		this.drawTickMarks();
 		this.scaleXData();
 		this.drawText();
