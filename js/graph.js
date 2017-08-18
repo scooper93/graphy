@@ -16,7 +16,7 @@ class Plot {
 		this.frameRate = 60;
 		this.drawingSpeed = 200;
 		this.numAverages = 3;
-		this.useAveraging=false;
+		this.useAveraging=true;
 		this.setDefaults()
 		// Genericc Program options are defined here
 	};
@@ -186,7 +186,7 @@ class Plot {
 				this.shiftData(this.scaleYData(inputData[i]));
 			}
 		}
-		drawData();
+		this.drawData();
 	}
 
 
