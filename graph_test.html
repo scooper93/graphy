@@ -19,12 +19,12 @@
 	
 	<body>
 		<script>
-			var plot;
-			var drawingSpeed =200; // Set to less than 1000
+			var plot; // Create an empty object for the plot.
+			var drawingSpeed =200; // how many times a second do you want to create and send data. 
 			var FPS = 40;
-			var pointsPerDraw =1+Math.ceil(drawingSpeed/FPS);
-			var l = 0;
-			var tempArray = new Array(pointsPerDraw);
+			// var pointsPerDraw =1+Math.ceil(drawingSpeed/FPS);
+			// var l = 0;
+			// var tempArray = new Array(pointsPerDraw);
 			var t =0;
 		</script>
 		<!-- Setting up the canvas enviroment for the graph -->
@@ -41,6 +41,8 @@
 		function startUp() {
 			plot = new Plot();
 			plot.initialisePlot();
+			plot.setFPS= 60;
+			plot.setAveraging= 10;
 			plot.lineWidth.point=4;
 			createData(t);
 			setInterval(function(){
@@ -60,12 +62,7 @@
             	val = Math.round(500+500 * Math.sin( (d.getTime() % 2000 ) / ( 200 / Math.PI ) ));
             }
             // var val = Math.round(1024 * Math.abs(Math.sin( (d.getTime() % 2000 ) / ( 500 / Math.PI ) )));
-            tempArray[l] = val;
-            l=l+1;
-            if (l==pointsPerDraw) {
-            	plot.plotData(tempArray);
-            	l=0;
-            }
+            plot.plotData(val); // Here we just ask it to plot data and the graphing will just take care of it.
 
         }
 
