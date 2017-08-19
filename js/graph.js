@@ -13,11 +13,14 @@ class Plot {
 		this.dataOptions;
 		this.dataMax =1000;
 		this.dataMin =0;
-		this.frameRate = 60;
+		this.frameRate = 60; 
 		this.drawingSpeed = 200;
 		this.numAverages = 3;
+		this.averageCounter =0;
 		this.useAveraging=true;
+		this.tempArray = new Array(this.numAverages).fill(0);
 		this.setDefaults()
+
 		// Genericc Program options are defined here
 	};
 	// Horizontal Grid lines go R-L
@@ -164,29 +167,27 @@ class Plot {
 
 	plotData(inputData) {
 		if (this.useAveraging==true) {
-			this.tempValue =0;
-			this.averagedData=0;
-			for (var j=0;j<Math.ceil(inputData.length/this.numAverages);i++) {
-				for (var k=0;k<this.numAverages;k++) {
-					this.tempValue = inputData[k+this.numAverages*j]; // This makes sure for each loop we're actually taking the correct data
+			this.tempArray[this.averageCounter] = inputData;
+			this.averageCounter+1;
+			if (this.averageCounter == this.numAverages) {
+				var averagedData=0;
+				for (var i =0;i<numAverages;i++) {
+					averagedData = avereragedData+this.tempArray[i];
 				}
-				if ((inputData.length%this.numAverages)==0) {				
-	 				this.averagedData = this.tempValue/this.numAverages;
-	 				this.shiftData(this.scaleYData(this.averagedData));
-				}
-				else {
-					this.averagedData = this.tempValue/(inputData.length%this.numAverages); 		// This handles if our data isn't an exact multiple of what we're left with
-					this.shiftData(this.scaleYData(this.averagedData));
-				}
+				averagedData = averagedData/this.numAverages;
+				this.shiftData(this.scaleYData(averagedData));
+				this.tempArray= new Array(this.numAverages).fill(0);
+				this.averageCounter =0;
+				this.drawData();
 			}
+
 		}
 		// Alternatively if we don't want averaging at all, we'll just deal with the data rate the best we can.
 		else { 
-			for (var i=0;i<inputData.length;i++){
-				this.shiftData(this.scaleYData(inputData[i]));
-			}
+			this.shiftData(this.scaleYData(inputData));
+			// maybe we should have some sort of frame limiting here maybe?	
+			this.drawData();
 		}
-		this.drawData();
 	}
 
 
