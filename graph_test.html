@@ -20,7 +20,7 @@
 	<body>
 		<script>
 			var plot; // Create an empty object for the plot.
-			var drawingSpeed =200; // how many times a second do you want to create and send data. 
+			var drawingSpeed =400; // how many times a second do you want to create and send data. 
 			var FPS = 40;
 			// var pointsPerDraw =1+Math.ceil(drawingSpeed/FPS);
 			// var l = 0;
@@ -41,8 +41,8 @@
 		function startUp() {
 			plot = new Plot();
 			plot.initialisePlot();
-			plot.setFPS= 60;
-			plot.setAveraging= 10;
+			plot.setFPS= 30;
+			plot.setAveraging= 1;
 			plot.lineWidth.point=4;
 			createData(t);
 			setInterval(function(){

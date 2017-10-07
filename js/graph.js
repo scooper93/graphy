@@ -1,5 +1,21 @@
 class Plot {
-
+// TODO: Fix averaging
+// 		 V1 - initial release - shouldn't do anything that the RS graphing did
+// 		 Fix frame limiter in graphing
+//	     Timing
+// 		 NUll Data points
+// 		 Catch drawing too quickly
+//		 Code Cleanup
+// 		 V2  
+//		 Adaptive Size control
+// 		 Time series data
+// 		 Different line styles
+// 		 Code cleanup 
+// 		 V3
+// 		 Multiple Data streams
+// 	     Multiple data streams with different sampling rates
+//		 Loglog and semi log support
+	
 	constructor() {
 		this.drawing = false;
 		this.dataLength = 500;
@@ -13,15 +29,16 @@ class Plot {
 		this.dataOptions;
 		this.dataMax =1000;
 		this.dataMin =0;
-		this.frameRate = 60; 
-		this.drawingSpeed = 200;
-		this.numAverages = 3;
+		this.frameRate = 30; 
+		this.drawingSpeed = 10;
+		this.numAverages = 2;
 		this.averageCounter =0;
-		this.useAveraging=true;
+		this.useAveraging=false;
 		this.tempArray = new Array(this.numAverages).fill(0);
 		this.setDefaults()
+		this.prevData;
 
-		// Genericc Program options are defined here
+		// Generic Program options are defined here
 	};
 	// Horizontal Grid lines go R-L
 	setDefaults(lineColour,lineWidth,fontColour,fontOption,dataOptions,plotOptions) {
@@ -146,7 +163,10 @@ class Plot {
 
 		this.yTickStringText = new Array(this.plotOptions.numVertGridLines);
 		this.xTickStringText = new Array(this.plotOptions.numHorGridLines);
-		this.pointsPerDraw = 1+Math.ceil(drawingSpeed/FPS);
+
+		this.numDrawsPerFrame = 1+Math.ceil(this.drawingSpeed/this.frameRate);
+		this.FPS = this.drawingSpeed/this.numDrawsPerFrame;
+		
 		this.drawTickMarks();
 		this.scaleXData();
 		this.drawText();
@@ -166,26 +186,22 @@ class Plot {
 	}
 
 	plotData(inputData) {
-		if (this.useAveraging==true) {
-			this.tempArray[this.averageCounter] = inputData;
-			this.averageCounter+1;
-			if (this.averageCounter == this.numAverages) {
-				var averagedData=0;
-				for (var i =0;i<numAverages;i++) {
-					averagedData = avereragedData+this.tempArray[i];
-				}
-				averagedData = averagedData/this.numAverages;
-				this.shiftData(this.scaleYData(averagedData));
-				this.tempArray= new Array(this.numAverages).fill(0);
-				this.averageCounter =0;
-				this.drawData();
-			}
 
+		// This needs to be re-written. it should be using some kind of timing control to run the averaging and the frame limiting by using the same function
+		// TEMP: First we'll fix the non averaging and get smooth graphing, then we'll get averaging working correctly. 
+		// TEMP: We'll need to think about what averaging we'll like to ue, should this be smoothing tha tuses the last few data points, or something that
+		// averages a set block of data points based on the users requiremetns. We could throw a warning saying that graphing will be slower with too many averages. 
+
+
+
+		if (this.useAveraging==true) {
+			// We removed the old averaging here. 
 		}
 		// Alternatively if we don't want averaging at all, we'll just deal with the data rate the best we can.
 		else { 
-			this.shiftData(this.scaleYData(inputData));
-			// maybe we should have some sort of frame limiting here maybe?	
+			for (var i=0;i<this.numDrawsPerFrame;i++) {
+				this.shiftData(this.scaleYData(inputData));		
+			}
 			this.drawData();
 		}
 	}
@@ -193,7 +209,9 @@ class Plot {
 
 	// set this in the code by doing plot.lineColour.xaxis="rgba(red,green,blue,opacity)"
 	drawData(){
+		// Now we'll use the set target FPS and the target drawing speed to adjust how many new points we'll be drawing each frame. 
 		if (this.drawing==false) {
+			// We set the drawing flag to avoid any timing issues. 
 			this.drawing=true;
 
 			
