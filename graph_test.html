@@ -49,6 +49,7 @@
 				createData(t);
 				t=t+0.005;
         },Math.round(1000/drawingSpeed))
+			initDataDraw();
 			}
  		function createData() {
             var minval = 0;
@@ -63,12 +64,17 @@
             }
             // var val = Math.round(1024 * Math.abs(Math.sin( (d.getTime() % 2000 ) / ( 500 / Math.PI ) )));
             plot.plotData(val); // Here we just ask it to plot data and the graphing will just take care of it.
-
         }
 
         function resizeGraph() {
           plot.initialisePlot();
         }
+
+	function initDataDraw() {
+		setInterval(function(){
+			plot.drawData();
+		}, Math.floor(1000/100)); 
+	}
     window.addEventListener("resize", resizeGraph());
 		</script>
 	</body>

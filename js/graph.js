@@ -30,8 +30,8 @@ class Plot {
 		this.dataMax =1000;
 		this.dataMin =0;
 		this.frameRate = 30; 
-		this.drawingSpeed = 10;
-		this.numAverages = 2;
+		this.drawingSpeed = 1;
+		this.numAverages = 1;
 		this.averageCounter =0;
 		this.useAveraging=false;
 		this.tempArray = new Array(this.numAverages).fill(0);
@@ -202,11 +202,8 @@ class Plot {
 			for (var i=0;i<this.numDrawsPerFrame;i++) {
 				this.shiftData(this.scaleYData(inputData));		
 			}
-			this.drawData();
 		}
 	}
-
-
 	// set this in the code by doing plot.lineColour.xaxis="rgba(red,green,blue,opacity)"
 	drawData(){
 		// Now we'll use the set target FPS and the target drawing speed to adjust how many new points we'll be drawing each frame. 
