@@ -19,47 +19,47 @@ class Plot {
 	// Horizontal Grid lines go R-L
 	setDefaults(lineColour,lineWidth,fontColour,fontOption,axisOption,plotOption) {
 		this.lineColour = {
-			xaxis:"rgba(0,0,0,0.8)",
-			yaxis: "rgba(0,0,0,0.8)",
-			xaxis:"rgba(0,0,0,0.8)",
-			yaxis: "rgba(0,0,0,0.8)",
-			xgrid:"rgba(0,0,0,0.3)",
-			ygrid:"rgba(0,0,0,0.3)",
+			xAxis:"rgba(0,0,0,0.8)",
+			yAxis: "rgba(0,0,0,0.8)",
+			xAxis:"rgba(0,0,0,0.8)",
+			yAxis: "rgba(0,0,0,0.8)",
+			xGrid:"rgba(0,0,0,0.3)",
+			yGrid:"rgba(0,0,0,0.3)",
 			point:"rgba(255,0,0,1)"
 		},
 		this.lineWidth = {
-			xaxis: 2,
-			yaxis: 2,
-			xgrid: 1,
-			ygrid: 1,
-			xtick: 2,
-			ytick: 2,
+			xAxis: 2,
+			yAxis: 2,
+			xGrid: 1,
+			yGrid: 1,
+			xTick: 2,
+			yTick: 2,
 			point: 2
 		},
 		this.fontColour = {
-			xlabel: "rgba(0,0,0,1)",
-			ylabel: "rbga(0,0,0,1)",
+			xLabel: "rgba(0,0,0,1)",
+			yLabel: "rbga(0,0,0,1)",
 			title: "rgba(0,0,0,1)",
-			ytick: "rgba(0,0,0,1)",
-			xtick: "rgba(0,0,0,1)"
+			yTick: "rgba(0,0,0,1)",
+			xTick: "rgba(0,0,0,1)"
 		},
 		this.fontSize = {
-			xlabel: 30,
-			ylabel: 30,
+			xLabel: 30,
+			yLabel: 30,
 			title: 40,
 			xTick: 15,
 			yTick: 15
 		},
 		this.fontType = {
-			xlabel: "Arial",
-			ylabel: "Arial",
+			xLabel: "Arial",
+			yLabel: "Arial",
 			title: "Arial",
 			yTick: "Arial",
 			xTick: "Arial"
 		},
 		this.fontOption = {
-			xlabel: this.fontSize.xlabel.toString().concat("px"," ",this.fontType.xlabel),
-			ylabel: this.fontSize.ylabel.toString().concat("px"," ",this.fontType.ylabel),
+			xLabel: this.fontSize.xLabel.toString().concat("px"," ",this.fontType.xLabel),
+			yLabel: this.fontSize.yLabel.toString().concat("px"," ",this.fontType.yLabel),
 			title: this.fontSize.title.toString().concat("px"," ",this.fontType.title),
 			yTickText: this.fontSize.yTick.toString().concat("px"," ",this.fontType.yTick),
 			xTickText: this.fontSize.xTick.toString().concat("px"," ",this.fontType.xTick),
@@ -67,22 +67,22 @@ class Plot {
 			yTickTextAlign: "right"
 		},
 		this.axisOption = {
-			xlabel: "Data Point Number",
-			ylabel: "Amplitude",
-			xlabelAlign: "center",
-			ylabelAlign: "center",
+			xLabel: "Data Point Number",
+			yLabel: "Amplitude",
+			xLabelAlign: "center",
+			yLabelAlign: "center",
 			titleAlign: "center",
 			title: "Graph Title"
 		},
 		this.plotOption = {
 			vertGridLines: true,
 			horGridLines: true,
-			drawXTickText: true,
-			drawYTickText: true,
+			drawxTickText: true,
+			drawyTickText: true,
 			numVertGridLines: 10,
 			numHorGridLines: 10,
-			xtickLength: 10,
-			ytickLength: 10,
+			xTickLength: 10,
+			yTickLength: 10,
 			dashXLine: false,
 			dashYLine: false
 
@@ -107,10 +107,10 @@ class Plot {
 		// Defining some margins and boundaries for scaling, we have to do this after the canvas has been defined otherwise bad things will happen. 
 		this.margin = {
     		top : 2*this.fontSize.title,
-    		bottom: this.fontSize.xlabel + this.plotOption.xtickLength + 2*this.fontSize.xTick,
-    		// bottom : (this.canvasWidth/this.canvasHeight)*this.fontSize.xlabel, // I know what your thinking, but shush. 
-    		right : 2*this.fontSize.ylabel,
-    		left : 2*this.fontSize.ylabel + this.plotOption.ytickLength
+    		bottom: this.fontSize.xLabel + this.plotOption.xTickLength + 2*this.fontSize.xTick,
+    		// bottom : (this.canvasWidth/this.canvasHeight)*this.fontSize.xLabel, // I know what your thinking, but shush. 
+    		right : 2*this.fontSize.yLabel,
+    		left : 2*this.fontSize.yLabel + this.plotOption.yTickLength
 		};
 
 		this.bounds = {
@@ -145,11 +145,11 @@ class Plot {
 		this.drawText();
 		this.calculateTickText();
 
-		if (this.plotOption.drawXTickText == true) {
-			this.drawXTickText();
+		if (this.plotOption.drawxTickText == true) {
+			this.drawxTickText();
 		}
-		if (this.plotOption.drawYTickText == true) {
-			this.drawYTickText();
+		if (this.plotOption.drawyTickText == true) {
+			this.drawyTickText();
 		}
 		this.DrawAxes();
 	}
@@ -159,7 +159,7 @@ class Plot {
 	}
 
 
-	// set this in the code by doing plot.lineColour.xaxis="rgba(red,green,blue,opacity)"
+	// set this in the code by doing plot.lineColour.xAxis="rgba(red,green,blue,opacity)"
 	plotData(newData){
 		if (this.drawing==false) {
 			this.drawing=true;
@@ -169,7 +169,7 @@ class Plot {
 			
 			// We'll now clear the data points canvas so we can redraw it
 
-			this.ctx.clearRect(this.bounds.left-this.lineWidth.yaxis,this.bounds.top-this.lineWidth.xaxis-this.lineWidth.point,this.bounds.right,this.bounds.bottom-this.bounds.top+this.lineWidth.xaxis+this.lineWidth.point);
+			this.ctx.clearRect(this.bounds.left-this.lineWidth.yAxis,this.bounds.top-this.lineWidth.xAxis-this.lineWidth.point,this.bounds.right,this.bounds.bottom-this.bounds.top+this.lineWidth.xAxis+this.lineWidth.point);
 			// this.ctx.clearRect(this.offsetX+1,0,this.bounds.graphWidth-1,this.bounds.graphHeight-this.offsetY);
 			this.DrawAxes();
 			// this.drawTickMarks();
@@ -216,18 +216,18 @@ class Plot {
 		this.ctx.beginPath();
 		this.ctx.moveTo(this.bounds.left,this.bounds.top);
 		this.ctx.lineTo(this.bounds.left,this.bounds.bottom);
-		this.ctx.strokeStyle = this.lineColour.yaxis;
-		this.ctx.lineWidth = this.lineWidth.yaxis;
+		this.ctx.strokeStyle = this.lineColour.yAxis;
+		this.ctx.lineWidth = this.lineWidth.yAxis;
 		this.ctx.stroke();
 		this.ctx.closePath()
 
 
 		// now we'll draw the horizontal axis 
 		this.ctx.beginPath();
-		this.ctx.moveTo(this.bounds.left,this.bounds.bottom+this.lineWidth.xaxis);
-		this.ctx.lineTo(this.bounds.right,this.bounds.bottom+this.lineWidth.xaxis);
-		this.ctx.strokeStyle = this.lineColour.xaxis;
-		this.ctx.lineWidth = this.lineWidth.xaxis;
+		this.ctx.moveTo(this.bounds.left,this.bounds.bottom+this.lineWidth.xAxis);
+		this.ctx.lineTo(this.bounds.right,this.bounds.bottom+this.lineWidth.xAxis);
+		this.ctx.strokeStyle = this.lineColour.xAxis;
+		this.ctx.lineWidth = this.lineWidth.xAxis;
 		this.ctx.stroke();
 		this.ctx.closePath();
 		// Now should we add some markers every n points? This should be specified in the constructor as a default
@@ -236,10 +236,10 @@ class Plot {
 	drawTickMarks() {
 		for (var i=0; i<this.plotOption.numHorGridLines+1; i++) {
 			this.ctx.beginPath();
-			this.ctx.moveTo(this.bounds.left-this.plotOption.ytickLength,this.bounds.top+i*this.horGridSpacing);
-			this.ctx.lineTo(this.bounds.left+this.lineWidth.ytick/2,this.bounds.top+i*this.horGridSpacing);
-			this.ctx.lineWidth =  this.lineWidth.ytick
-			this.ctx.strokeStyle = this.lineColour.ytick;
+			this.ctx.moveTo(this.bounds.left-this.plotOption.yTickLength,this.bounds.top+i*this.horGridSpacing);
+			this.ctx.lineTo(this.bounds.left+this.lineWidth.yTick/2,this.bounds.top+i*this.horGridSpacing);
+			this.ctx.lineWidth =  this.lineWidth.yTick
+			this.ctx.strokeStyle = this.lineColour.yTick;
 			this.ctx.stroke();
 			this.ctx.closePath();
 			i=i+1;
@@ -247,21 +247,21 @@ class Plot {
 
 		for (var i = 0 ; i<this.plotOption.numVertGridLines+1; i++) {
 			this.ctx.beginPath();
-			this.ctx.moveTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom-this.lineWidth.xtick/2);
-			this.ctx.lineTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom+this.plotOption.xtickLength);
-			this.ctx.strokeStyle = this.lineColour.xtick;
-			this.ctx.lineWidth = this.lineWidth.xtick;
+			this.ctx.moveTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom-this.lineWidth.xTick/2);
+			this.ctx.lineTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom+this.plotOption.xTickLength);
+			this.ctx.strokeStyle = this.lineColour.xTick;
+			this.ctx.lineWidth = this.lineWidth.xTick;
 			this.ctx.stroke();
 			this.ctx.closePath();
 		}
 	}
 
 	drawText() {
-		// Draw the xlabel
-		this.ctx.font = this.fontOption.xlabel; 
-		this.ctx.fillStyle = this.fontColour.xlabel;
-		this.ctx.textAlign = this.axisOption.xlabelAlign;
-		this.ctx.fillText(this.axisOption.xlabel, this.bounds.graphWidth/2+this.bounds.left, this.bounds.bottom + this.margin.bottom/2 + 2*this.fontSize.xTick);
+		// Draw the xLabel
+		this.ctx.font = this.fontOption.xLabel; 
+		this.ctx.fillStyle = this.fontColour.xLabel;
+		this.ctx.textAlign = this.axisOption.xLabelAlign;
+		this.ctx.fillText(this.axisOption.xLabel, this.bounds.graphWidth/2+this.bounds.left, this.bounds.bottom + this.margin.bottom/2 + 2*this.fontSize.xTick);
 		
 		// Draws the title
 
@@ -275,11 +275,11 @@ class Plot {
 		this.ctx.save();
 		this.ctx.translate(this.canvasWidth - 1,0);
 		this.ctx.rotate(3*Math.PI/2);
-		this.ctx.font = this.fontOption.ylabel;
-		this.ctx.fillStyle = this.fontColour.ylabel;
-		this.ctx.textAlign = this.axisOption.ylabelAlign;
+		this.ctx.font = this.fontOption.yLabel;
+		this.ctx.fillStyle = this.fontColour.yLabel;
+		this.ctx.textAlign = this.axisOption.yLabelAlign;
 		this.ctx.direction = "rtl"
-		this.ctx.fillText(this.axisOption.ylabel, -this.bounds.graphHeight/2 -this.margin.top,-this.bounds.right - this.margin.left/2);
+		this.ctx.fillText(this.axisOption.yLabel, -this.bounds.graphHeight/2 -this.margin.top,-this.bounds.right - this.margin.left/2);
 		this.ctx.restore();
 	}
 
@@ -304,27 +304,27 @@ class Plot {
 	}
 
 
-	drawXTickText() {
+	drawxTickText() {
 		// we'll now draw the text for each of the tick marks on the axes  
 
 		// Setup font styling for drawing for text on X ticks
 		this.ctx.font = this.fontOption.xTickText;
-		this.ctx.fillStyle = this.fontColour.xtick;
+		this.ctx.fillStyle = this.fontColour.xTick;
 		this.ctx.textAlign = this.fontOption.xTickTextAlign;
 
 		for (var i = 0; i<this.plotOption.numVertGridLines+1;i++) {
-			this.ctx.fillText(this.xTickStringText[i], this.bounds.left+i*this.vertGridSpacing, this.bounds.bottom +this.fontSize.yTick+this.plotOption.xtickLength);
+			this.ctx.fillText(this.xTickStringText[i], this.bounds.left+i*this.vertGridSpacing, this.bounds.bottom +this.fontSize.yTick+this.plotOption.xTickLength);
 		} 
 	}
 
-	drawYTickText() {
+	drawyTickText() {
 		// Setup Font styling for drawing for text on Y ticks..
 		this.ctx.font = this.fontOption.yTickText;
-		this.ctx.fillStyle = this.fontColour.ytick;
+		this.ctx.fillStyle = this.fontColour.yTick;
 		this.ctx.textAlign = this.fontOption.yTickTextAlign;
 		this.ctx.textBaseline="middle"; 
 		for (var i = 0; i<this.plotOption.numHorGridLines+1;i++) {
-			this.ctx.fillText(this.yTickStringText[i],this.bounds.left-1.5*this.plotOption.ytickLength,this.bounds.bottom - this.horGridSpacing*i)
+			this.ctx.fillText(this.yTickStringText[i],this.bounds.left-1.5*this.plotOption.yTickLength,this.bounds.bottom - this.horGridSpacing*i)
 			i=i+0;
 		}
 	}
@@ -336,8 +336,8 @@ class Plot {
 				this.ctx.beginPath();
 				this.ctx.moveTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom);
 				this.ctx.lineTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.top);
-				this.ctx.strokeStyle = this.lineColour.ygrid;
-				this.ctx.lineWidth = this.lineWidth.ygrid
+				this.ctx.strokeStyle = this.lineColour.yGrid;
+				this.ctx.lineWidth = this.lineWidth.yGrid
 				this.ctx.stroke();
 				this.ctx.closePath();
 			}
@@ -357,8 +357,8 @@ class Plot {
 			this.ctx.beginPath();
 			this.ctx.moveTo(this.bounds.left,this.bounds.top+i*this.horGridSpacing);
 			this.ctx.lineTo(this.bounds.right,this.bounds.top+i*this.horGridSpacing);
-			this.ctx.lineWidth =  this.lineWidth.xgrid
-			this.ctx.strokeStyle = this.lineColour.xgrid;
+			this.ctx.lineWidth =  this.lineWidth.xGrid
+			this.ctx.strokeStyle = this.lineColour.xGrid;
 			this.ctx.stroke();
 			this.ctx.closePath();
 		}
@@ -372,14 +372,14 @@ class Plot {
  
 		for (var j = 0; j < this.dataLength;j++){
              // this.timeData[j] = this.offsetX + ( this.bounds.graphWidth - ( this.xscale * j ) );
-             this.timeData[j] = this.bounds.left+this.lineWidth.yaxis/2 + ( this.bounds.graphWidth - ( this.dx*j))
+             this.timeData[j] = this.bounds.left+this.lineWidth.yAxis/2 + ( this.bounds.graphWidth - ( this.dx*j))
         }
 	}	
 	scaleYData(newData) {
 		// I'm going to write this in hardcoded for the meanwhile to get something working, then I'll start with the adaptive scaling. 
 		// THe max value will be the offsety  and the minimum will be the offset y + the graph's height
 		// var tempgraphData = this.bounds.graphHeight*(this.dataMax-newData)/(this.dataMax-this.dataMin)
-		var tempgraphData = this.bounds.top-this.lineWidth.xaxis/2 + ((this.dataMax) -newData)*this.dy;
+		var tempgraphData = this.bounds.top-this.lineWidth.xAxis/2 + ((this.dataMax) -newData)*this.dy;
 		return tempgraphData;
 	}
 
