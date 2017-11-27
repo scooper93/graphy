@@ -1,21 +1,5 @@
 class Plot {
-// TODO: Fix averaging
-// 		 V1 - initial release - shouldn't do anything that the RS graphing did
-// 		 Fix frame limiter in graphing
-//	     Timing
-// 		 NUll Data points
-// 		 Catch drawing too quickly
-//		 Code Cleanup
-// 		 V2  
-//		 Adaptive Size control
-// 		 Time series data
-// 		 Different line styles
-// 		 Code cleanup 
-// 		 V3
-// 		 Multiple Data streams
-// 	     Multiple data streams with different sampling rates
-//		 Loglog and semi log support
-	
+
 	constructor() {
 		this.drawing = false;
 		this.dataLength = 500;
@@ -29,16 +13,8 @@ class Plot {
 		this.dataOptions;
 		this.dataMax =1000;
 		this.dataMin =0;
-		this.frameRate = 30; 
-		this.drawingSpeed = 1;
-		this.numAverages = 1;
-		this.averageCounter =0;
-		this.useAveraging=false;
-		this.tempArray = new Array(this.numAverages).fill(0);
 		this.setDefaults()
-		this.prevData;
-
-		// Generic Program options are defined here
+		// Genericc Program options are defined here
 	};
 	// Horizontal Grid lines go R-L
 	setDefaults(lineColour,lineWidth,fontColour,fontOption,dataOptions,plotOptions) {
@@ -163,9 +139,6 @@ class Plot {
 
 		this.yTickStringText = new Array(this.plotOptions.numVertGridLines);
 		this.xTickStringText = new Array(this.plotOptions.numHorGridLines);
-
-		this.numDrawsPerFrame = 1+Math.ceil(this.drawingSpeed/this.frameRate);
-		this.FPS = this.drawingSpeed/this.numDrawsPerFrame;
 		
 		this.drawTickMarks();
 		this.scaleXData();
@@ -185,32 +158,14 @@ class Plot {
 		document.body.style.backgroundColor = background_colour;
 	}
 
-	plotData(inputData) {
 
-		// This needs to be re-written. it should be using some kind of timing control to run the averaging and the frame limiting by using the same function
-		// TEMP: First we'll fix the non averaging and get smooth graphing, then we'll get averaging working correctly. 
-		// TEMP: We'll need to think about what averaging we'll like to ue, should this be smoothing tha tuses the last few data points, or something that
-		// averages a set block of data points based on the users requiremetns. We could throw a warning saying that graphing will be slower with too many averages. 
-
-
-
-		if (this.useAveraging==true) {
-			// We removed the old averaging here. 
-		}
-		// Alternatively if we don't want averaging at all, we'll just deal with the data rate the best we can.
-		else { 
-			for (var i=0;i<this.numDrawsPerFrame;i++) {
-				this.shiftData(this.scaleYData(inputData));		
-			}
-		}
-	}
 	// set this in the code by doing plot.lineColour.xaxis="rgba(red,green,blue,opacity)"
-	drawData(){
-		// Now we'll use the set target FPS and the target drawing speed to adjust how many new points we'll be drawing each frame. 
+	plotData(newData){
 		if (this.drawing==false) {
-			// We set the drawing flag to avoid any timing issues. 
 			this.drawing=true;
-
+			for (var i=0;i<newData.length;i++){
+				this.shiftData(this.scaleYData(newData[i]));
+			}
 			
 			// We'll now clear the data points canvas so we can redraw it
 
