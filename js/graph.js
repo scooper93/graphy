@@ -9,15 +9,15 @@ class Plot {
 		this.lineWidth;
 		this.textColour;
 		this.ctx;
-		this.plotOptions;
-		this.dataOptions;
+		this.plotOption;
+		this.axisOption;
 		this.dataMax =1000;
 		this.dataMin =0;
 		this.setDefaults()
 		// Genericc Program options are defined here
 	};
 	// Horizontal Grid lines go R-L
-	setDefaults(lineColour,lineWidth,fontColour,fontOption,dataOptions,plotOptions) {
+	setDefaults(lineColour,lineWidth,fontColour,fontOption,axisOption,plotOption) {
 		this.lineColour = {
 			xaxis:"rgba(0,0,0,0.8)",
 			yaxis: "rgba(0,0,0,0.8)",
@@ -61,20 +61,20 @@ class Plot {
 			xlabel: this.fontSize.xlabel.toString().concat("px"," ",this.fontType.xlabel),
 			ylabel: this.fontSize.ylabel.toString().concat("px"," ",this.fontType.ylabel),
 			title: this.fontSize.title.toString().concat("px"," ",this.fontType.title),
-			xlabelAlign: "center",
-			ylabelAlign: "center",
-			titleAlign: "center",
 			yTickText: this.fontSize.yTick.toString().concat("px"," ",this.fontType.yTick),
 			xTickText: this.fontSize.xTick.toString().concat("px"," ",this.fontType.xTick),
 			xTickTextAlign: "center",
 			yTickTextAlign: "right"
 		},
-		this.dataOptions = {
+		this.axisOption = {
 			xlabel: "Data Point Number",
 			ylabel: "Amplitude",
+			xlabelAlign: "center",
+			ylabelAlign: "center",
+			titleAlign: "center",
 			title: "Graph Title"
 		},
-		this.plotOptions = {
+		this.plotOption = {
 			vertGridLines: true,
 			horGridLines: true,
 			drawXTickText: true,
@@ -107,10 +107,10 @@ class Plot {
 		// Defining some margins and boundaries for scaling, we have to do this after the canvas has been defined otherwise bad things will happen. 
 		this.margin = {
     		top : 2*this.fontSize.title,
-    		bottom: this.fontSize.xlabel + this.plotOptions.xtickLength + 2*this.fontSize.xTick,
+    		bottom: this.fontSize.xlabel + this.plotOption.xtickLength + 2*this.fontSize.xTick,
     		// bottom : (this.canvasWidth/this.canvasHeight)*this.fontSize.xlabel, // I know what your thinking, but shush. 
     		right : 2*this.fontSize.ylabel,
-    		left : 2*this.fontSize.ylabel + this.plotOptions.ytickLength
+    		left : 2*this.fontSize.ylabel + this.plotOption.ytickLength
 		};
 
 		this.bounds = {
@@ -132,23 +132,23 @@ class Plot {
 		this.dy = this.bounds.yRange / (this.dataMax - this.dataMin)
 
 		// Grid spacing 
-		this.vertGridSpacing = this.bounds.graphWidth / this.plotOptions.numVertGridLines;
-		this.horGridSpacing = this.bounds.graphHeight / this.plotOptions.numHorGridLines;
+		this.vertGridSpacing = this.bounds.graphWidth / this.plotOption.numVertGridLines;
+		this.horGridSpacing = this.bounds.graphHeight / this.plotOption.numHorGridLines;
 
 		// Create new array to store the strings for the tick mark text
 
-		this.yTickStringText = new Array(this.plotOptions.numVertGridLines);
-		this.xTickStringText = new Array(this.plotOptions.numHorGridLines);
+		this.yTickStringText = new Array(this.plotOption.numVertGridLines);
+		this.xTickStringText = new Array(this.plotOption.numHorGridLines);
 		
 		this.drawTickMarks();
 		this.scaleXData();
 		this.drawText();
 		this.calculateTickText();
 
-		if (this.plotOptions.drawXTickText == true) {
+		if (this.plotOption.drawXTickText == true) {
 			this.drawXTickText();
 		}
-		if (this.plotOptions.drawYTickText == true) {
+		if (this.plotOption.drawYTickText == true) {
 			this.drawYTickText();
 		}
 		this.DrawAxes();
@@ -176,10 +176,10 @@ class Plot {
 			// this.drawText();
 
 			// Now we check whether we want vertical and horizontal gridlines
-			if (this.plotOptions.vertGridLines == true) {
+			if (this.plotOption.vertGridLines == true) {
 				this.DrawVerticalGridLines();
 			}
-			if (this.plotOptions.horGridLines == true) {
+			if (this.plotOption.horGridLines == true) {
 				this.DrawHorizontalGridLines();
 			}
 
@@ -234,9 +234,9 @@ class Plot {
 	}
 
 	drawTickMarks() {
-		for (var i=0; i<this.plotOptions.numHorGridLines+1; i++) {
+		for (var i=0; i<this.plotOption.numHorGridLines+1; i++) {
 			this.ctx.beginPath();
-			this.ctx.moveTo(this.bounds.left-this.plotOptions.ytickLength,this.bounds.top+i*this.horGridSpacing);
+			this.ctx.moveTo(this.bounds.left-this.plotOption.ytickLength,this.bounds.top+i*this.horGridSpacing);
 			this.ctx.lineTo(this.bounds.left+this.lineWidth.ytick/2,this.bounds.top+i*this.horGridSpacing);
 			this.ctx.lineWidth =  this.lineWidth.ytick
 			this.ctx.strokeStyle = this.lineColour.ytick;
@@ -245,10 +245,10 @@ class Plot {
 			i=i+1;
 		}
 
-		for (var i = 0 ; i<this.plotOptions.numVertGridLines+1; i++) {
+		for (var i = 0 ; i<this.plotOption.numVertGridLines+1; i++) {
 			this.ctx.beginPath();
 			this.ctx.moveTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom-this.lineWidth.xtick/2);
-			this.ctx.lineTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom+this.plotOptions.xtickLength);
+			this.ctx.lineTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom+this.plotOption.xtickLength);
 			this.ctx.strokeStyle = this.lineColour.xtick;
 			this.ctx.lineWidth = this.lineWidth.xtick;
 			this.ctx.stroke();
@@ -260,15 +260,15 @@ class Plot {
 		// Draw the xlabel
 		this.ctx.font = this.fontOption.xlabel; 
 		this.ctx.fillStyle = this.fontColour.xlabel;
-		this.ctx.textAlign = this.fontOption.xlabelAlign;
-		this.ctx.fillText(this.dataOptions.xlabel, this.bounds.graphWidth/2+this.bounds.left, this.bounds.bottom + this.margin.bottom/2 + 2*this.fontSize.xTick);
+		this.ctx.textAlign = this.axisOption.xlabelAlign;
+		this.ctx.fillText(this.axisOption.xlabel, this.bounds.graphWidth/2+this.bounds.left, this.bounds.bottom + this.margin.bottom/2 + 2*this.fontSize.xTick);
 		
 		// Draws the title
 
 		this.ctx.font = this.fontOption.title;
 		this.ctx.fillStyle = this.fontColour.title;
 		this.ctx.textAlign = this.fontOption.titleAlign;
-		this.ctx.fillText(this.dataOptions.title, this.bounds.graphWidth/2+this.bounds.left, this.bounds.top - this.margin.top/2);
+		this.ctx.fillText(this.axisOption.title, this.bounds.graphWidth/2+this.bounds.left, this.bounds.top - this.margin.top/2);
 
 		// now we'll draw the rotated y axis. 
 
@@ -277,9 +277,9 @@ class Plot {
 		this.ctx.rotate(3*Math.PI/2);
 		this.ctx.font = this.fontOption.ylabel;
 		this.ctx.fillStyle = this.fontColour.ylabel;
-		this.ctx.textAlign = this.fontOption.ylabelAlign;
+		this.ctx.textAlign = this.axisOption.ylabelAlign;
 		this.ctx.direction = "rtl"
-		this.ctx.fillText(this.dataOptions.ylabel, -this.bounds.graphHeight/2 -this.margin.top,-this.bounds.right - this.margin.left/2);
+		this.ctx.fillText(this.axisOption.ylabel, -this.bounds.graphHeight/2 -this.margin.top,-this.bounds.right - this.margin.left/2);
 		this.ctx.restore();
 	}
 
@@ -290,14 +290,14 @@ class Plot {
 		this.xDataRange = this.dataLength;
 
 		// calculate Spacing
-		this.yTickSpacing = this.yDataRange/ this.plotOptions.numHorGridLines;
-		this.xTickSpacing = this.xDataRange / this.plotOptions.numVertGridLines;
+		this.yTickSpacing = this.yDataRange/ this.plotOption.numHorGridLines;
+		this.xTickSpacing = this.xDataRange / this.plotOption.numVertGridLines;
 
-		for (var i = this.plotOptions.numHorGridLines; i>-1;i--) {
+		for (var i = this.plotOption.numHorGridLines; i>-1;i--) {
 			this.yTickStringText[i] = Math.round(this.dataMin + this.yTickSpacing*i).toString();
 		}
 
-		for (var j = this.plotOptions.numVertGridLines+1; j>-1;j--) {
+		for (var j = this.plotOption.numVertGridLines+1; j>-1;j--) {
 			this.xTickStringText[j] =(this.xTickSpacing*j).toString();
 		}
 
@@ -312,8 +312,8 @@ class Plot {
 		this.ctx.fillStyle = this.fontColour.xtick;
 		this.ctx.textAlign = this.fontOption.xTickTextAlign;
 
-		for (var i = 0; i<this.plotOptions.numVertGridLines+1;i++) {
-			this.ctx.fillText(this.xTickStringText[i], this.bounds.left+i*this.vertGridSpacing, this.bounds.bottom +this.fontSize.yTick+this.plotOptions.xtickLength);
+		for (var i = 0; i<this.plotOption.numVertGridLines+1;i++) {
+			this.ctx.fillText(this.xTickStringText[i], this.bounds.left+i*this.vertGridSpacing, this.bounds.bottom +this.fontSize.yTick+this.plotOption.xtickLength);
 		} 
 	}
 
@@ -323,8 +323,8 @@ class Plot {
 		this.ctx.fillStyle = this.fontColour.ytick;
 		this.ctx.textAlign = this.fontOption.yTickTextAlign;
 		this.ctx.textBaseline="middle"; 
-		for (var i = 0; i<this.plotOptions.numHorGridLines+1;i++) {
-			this.ctx.fillText(this.yTickStringText[i],this.bounds.left-1.5*this.plotOptions.ytickLength,this.bounds.bottom - this.horGridSpacing*i)
+		for (var i = 0; i<this.plotOption.numHorGridLines+1;i++) {
+			this.ctx.fillText(this.yTickStringText[i],this.bounds.left-1.5*this.plotOption.ytickLength,this.bounds.bottom - this.horGridSpacing*i)
 			i=i+0;
 		}
 	}
@@ -332,7 +332,7 @@ class Plot {
 	DrawVerticalGridLines() {
 		// Here we'll draw some gridlines for the vertical and horizontal directions and have the number user specifiable
 		// first we'll draw the Vertical gridlines
-			for (var i = 0 ; i<this.plotOptions.numVertGridLines; i++) {
+			for (var i = 0 ; i<this.plotOption.numVertGridLines; i++) {
 				this.ctx.beginPath();
 				this.ctx.moveTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.bottom);
 				this.ctx.lineTo(this.bounds.left+i*this.vertGridSpacing,this.bounds.top);
@@ -343,9 +343,9 @@ class Plot {
 			}
 		// if (this.dashHorLine == true) {
 
-		// 	for (var i = 0 ; i < this.plotOptions.numVertGridLines; i++) {
+		// 	for (var i = 0 ; i < this.plotOption.numVertGridLines; i++) {
 		// 		this.ctx.beginPath();
-		// 		for (var j =0 ; j<this.plotOptions.numVertGridLines ; j++) {
+		// 		for (var j =0 ; j<this.plotOption.numVertGridLines ; j++) {
 
 		// 		}
 		// 	}
@@ -353,7 +353,7 @@ class Plot {
 	}
 	DrawHorizontalGridLines() {
 		// now we'll draw the Horizontal gridlines
-		for (var i=0; i<this.plotOptions.numHorGridLines; i++) {
+		for (var i=0; i<this.plotOption.numHorGridLines; i++) {
 			this.ctx.beginPath();
 			this.ctx.moveTo(this.bounds.left,this.bounds.top+i*this.horGridSpacing);
 			this.ctx.lineTo(this.bounds.right,this.bounds.top+i*this.horGridSpacing);
