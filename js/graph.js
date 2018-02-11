@@ -387,4 +387,4 @@ class Plot {
 	    this.graphData.pop();
 
 	}
-}
+}	
