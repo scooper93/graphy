@@ -15,7 +15,7 @@ class Plot {
 		this.dataMin =0;
 		this.averageData=true;
 		this.setDefaults()
-		// Genericc Program options are defined here
+		// Generic Program options are defined here
 	};
 
 	// Horizontal Grid lines go R-L
@@ -184,10 +184,7 @@ class Plot {
 			// We'll now clear the data points canvas so we can redraw it
 
 			this.ctx.clearRect(this.bounds.left-this.lineWidth.yAxis,this.bounds.top-this.lineWidth.xAxis-this.lineWidth.point,this.bounds.right,this.bounds.bottom-this.bounds.top+2*this.lineWidth.xAxis+this.lineWidth.point);
-			// this.ctx.clearRect(this.offsetX+1,0,this.bounds.graphWidth-1,this.bounds.graphHeight-this.offsetY);
 			this.DrawAxes();
-			// this.drawTickMarks();
-			// this.drawText();
 
 			// Now we check whether we want vertical and horizontal gridlines
 			if (this.plotOption.vertGridLines == true) {
@@ -216,7 +213,6 @@ class Plot {
 				this.drawing = false;
 				this.inuse = false;
 			}
-	// console.log("Wait, we're currently drawing something")
 		}
 		if (this.drawing == true) {
 			console.log("drawing too fast")
@@ -355,15 +351,6 @@ class Plot {
 				this.ctx.stroke();
 				this.ctx.closePath();
 			}
-		// if (this.dashHorLine == true) {
-
-		// 	for (var i = 0 ; i < this.plotOption.numVertGridLines; i++) {
-		// 		this.ctx.beginPath();
-		// 		for (var j =0 ; j<this.plotOption.numVertGridLines ; j++) {
-
-		// 		}
-		// 	}
-		// }
 	}
 
 	DrawHorizontalGridLines() {
@@ -381,9 +368,6 @@ class Plot {
 
 	scaleXData() {
 		// This should scale the x Data array to fit the points on the canvas.
-		// for (var j = 0;j<timeData.length;j++){
-  //    		timeData[j] = offsetx+(xscale*j);
-  //   	}
  
 		for (var j = 0; j < this.dataLength;j++){
              // this.timeData[j] = this.offsetX + ( this.bounds.graphWidth - ( this.xscale * j ) );
