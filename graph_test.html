@@ -13,8 +13,6 @@
 
 		<script src ="js/jquery.min.js"></script>
 		<script src="js/graph.js"></script>
-		<link href="css/grid.css">
-		<link href="css/grid-responsive-min.css">
 		<link href="css/test.css">
 
 	</head>
@@ -23,19 +21,19 @@
 		<script>
 			var plot;
 			var drawingSpeed =500; // Set to less than 1000
-			var FPS = 40;
+			var FPS = 60;
 			var pointsPerDraw =1+Math.ceil(drawingSpeed/FPS);
 			var l = 0;
 			var tempArray = new Array(pointsPerDraw);
 			var t =0;
 		</script>
 		<!-- Setting up the canvas enviroment for the graph -->
-		<div class="pure-g">
-			<div class="pure-u-1-4"></div>
-      <div class="pure-u-1-4" id="graph_container" style="height:400px">
+		<div class="">
+			<div class=""></div>
+      <div class="" id="graph_container" style="height:400px;width:600px" >
         <canvas id="realtime_graph"></canvas>
       </div>
-			<div class="pure-u-1-4"></div>
+			<div class=""></div>
 		</div>
 		<script>
 		window.onload = startUp()

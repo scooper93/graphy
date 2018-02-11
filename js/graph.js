@@ -13,9 +13,11 @@ class Plot {
 		this.axisOption;
 		this.dataMax =1000;
 		this.dataMin =0;
+		this.averageData=true;
 		this.setDefaults()
 		// Genericc Program options are defined here
 	};
+
 	// Horizontal Grid lines go R-L
 	setDefaults(lineColour,lineWidth,fontColour,fontOption,axisOption,plotOption) {
 		this.lineColour = {
@@ -88,15 +90,27 @@ class Plot {
 
 		};
 	}
+
 	initialisePlot() {
 		this.graphCanvas = document.getElementById("realtime_graph");
 		this.ctx = this.graphCanvas.getContext('2d')
 
-        this.graphContainerWidth = $("#graph_container").width();
-        this.graphContainerHeight = $("#graph_container").height();
+        // this.graphContainerWidth = $("#graph_container").width();
+        // this.graphContainerHeight = $("#graph_container").height();
 
-        this.ctx.canvas.width = this.graphContainerWidth;
-        this.ctx.canvas.height = this.graphContainerHeight;
+        this.el =document.getElementById("graph_container");
+
+		this.graphCanvas.setAttribute('width', this.el.offsetWidth);
+		this.graphCanvas.setAttribute('height', this.el.offsetHeight);
+
+        this.graphContainerWidth = this.ctx.width;
+		this.graphContainerHeight = this.ctx.height;
+
+        // this.ctx.canvas.width = this.graphContainerWidth;
+        // this.ctx.canvas.height = this.graphContainerHeight;
+
+
+
 
         // Now we'll set the current canvas size to the size of its container 
         // This should allow better scaling, if we need I can tie it to an event handler too. 
@@ -153,14 +167,26 @@ class Plot {
 		}
 		this.DrawAxes();
 	}
+
 	// set this by running plot.backgroundColour= "c#olour_value"
 	backgroundColour(background_colour) {
 		document.body.style.backgroundColor = background_colour;
 	}
 
+	plotData(newData){
+
+		if (this.averageData==true) {
+			// Do something to average the data currently does sod all
+			this.drawData(newData)
+		};
+		if (this.averageData ==false){
+			this.drawData(newData);
+		};
+
+	}
 
 	// set this in the code by doing plot.lineColour.xAxis="rgba(red,green,blue,opacity)"
-	plotData(newData){
+	drawData(newData){
 		if (this.drawing==false) {
 			this.drawing=true;
 			for (var i=0;i<newData.length;i++){
@@ -169,7 +195,7 @@ class Plot {
 			
 			// We'll now clear the data points canvas so we can redraw it
 
-			this.ctx.clearRect(this.bounds.left-this.lineWidth.yAxis,this.bounds.top-this.lineWidth.xAxis-this.lineWidth.point,this.bounds.right,this.bounds.bottom-this.bounds.top+this.lineWidth.xAxis+this.lineWidth.point);
+			this.ctx.clearRect(this.bounds.left-this.lineWidth.yAxis,this.bounds.top-this.lineWidth.xAxis-this.lineWidth.point,this.bounds.right,this.bounds.bottom-this.bounds.top+2*this.lineWidth.xAxis+this.lineWidth.point);
 			// this.ctx.clearRect(this.offsetX+1,0,this.bounds.graphWidth-1,this.bounds.graphHeight-this.offsetY);
 			this.DrawAxes();
 			// this.drawTickMarks();
@@ -351,6 +377,7 @@ class Plot {
 		// 	}
 		// }
 	}
+
 	DrawHorizontalGridLines() {
 		// now we'll draw the Horizontal gridlines
 		for (var i=0; i<this.plotOption.numHorGridLines; i++) {
