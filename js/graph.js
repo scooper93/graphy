@@ -95,9 +95,6 @@ class Plot {
 		this.graphCanvas = document.getElementById("realtime_graph");
 		this.ctx = this.graphCanvas.getContext('2d')
 
-        // this.graphContainerWidth = $("#graph_container").width();
-        // this.graphContainerHeight = $("#graph_container").height();
-
         this.el =document.getElementById("graph_container");
 
 		this.graphCanvas.setAttribute('width', this.el.offsetWidth);
@@ -106,17 +103,6 @@ class Plot {
         this.graphContainerWidth = this.ctx.width;
 		this.graphContainerHeight = this.ctx.height;
 
-        // this.ctx.canvas.width = this.graphContainerWidth;
-        // this.ctx.canvas.height = this.graphContainerHeight;
-
-
-
-
-        // Now we'll set the current canvas size to the size of its container 
-        // This should allow better scaling, if we need I can tie it to an event handler too. 
-
-		//this.canvasWidth = $("#realtime_graph").width();
-		//this.canvasHeight = $("#realtime_graph").height();
 		this.canvasWidth = this.graphCanvas.width;
 		this.canvasHeight = this.graphCanvas.height;
 		
