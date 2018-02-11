@@ -23,8 +23,6 @@ class Plot {
 		this.lineColour = {
 			xAxis:"rgba(0,0,0,0.8)",
 			yAxis: "rgba(0,0,0,0.8)",
-			xAxis:"rgba(0,0,0,0.8)",
-			yAxis: "rgba(0,0,0,0.8)",
 			xGrid:"rgba(0,0,0,0.3)",
 			yGrid:"rgba(0,0,0,0.3)",
 			point:"rgba(255,0,0,1)"

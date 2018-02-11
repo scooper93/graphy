@@ -37,9 +37,9 @@
 		window.onload = startUp()
 
 		function startUp() {
-			plot = new Plot();
-			plot.initialisePlot();
-			plot.lineWidth.point=4;
+			graphy = new Plot();
+			graphy.initialisePlot();
+			graphy.lineWidth.point=4;
 			createData(t);
 			setInterval(function(){
 				createData(t);
@@ -57,18 +57,19 @@
             if (t>3){
             	val = Math.round(500+500 * Math.sin( (d.getTime() % 2000 ) / ( 200 / Math.PI ) ));
             }
-            // var val = Math.round(1024 * Math.abs(Math.sin( (d.getTime() % 2000 ) / ( 500 / Math.PI ) )));
+  			
+  			// Bad exmaple of how to do averaging... but it works.
             tempArray[l] = val;
             l=l+1;
             if (l==pointsPerDraw) {
-            	plot.plotData(tempArray);
+            	graphy.plotData(tempArray);
             	l=0;
             }
 
         }
 
         function resizeGraph() {
-          plot.initialisePlot();
+          graphy.initialisePlot();
         }
     window.addEventListener("resize", resizeGraph());
 		</script>
