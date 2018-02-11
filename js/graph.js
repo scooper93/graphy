@@ -115,8 +115,10 @@ class Plot {
         // Now we'll set the current canvas size to the size of its container 
         // This should allow better scaling, if we need I can tie it to an event handler too. 
 
-		this.canvasWidth = $("#realtime_graph").width();
-		this.canvasHeight = $("#realtime_graph").height();
+		//this.canvasWidth = $("#realtime_graph").width();
+		//this.canvasHeight = $("#realtime_graph").height();
+		this.canvasWidth = this.graphCanvas.width;
+		this.canvasHeight = this.graphCanvas.height;
 		
 		// Defining some margins and boundaries for scaling, we have to do this after the canvas has been defined otherwise bad things will happen. 
 		this.margin = {
